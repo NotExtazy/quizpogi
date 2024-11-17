@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mga Poging BSIT Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333; /* Black background */
+            padding: 0;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .quiz-container {
+            max-width: 600px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .question {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #ff6600; /* Orange color for the question */
+        }
+        .answers {
+            margin-bottom: 20px;
+        }
+        .answer-button {
+            display: block;
+            background-color: #ff6600; /* Orange button background */
+            color: black; /* Black text */
+            border: none;
+            padding: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .answer-button:hover {
+            background-color: #e65c00; /* Darker orange on hover */
+        }
+        .message {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .correct {
+            color: green;
+        }
+        .incorrect {
+            color: red;
+        }
+        .final-buttons {
+            display: flex;
+            justify-content: space-around;
+        }
+        .final-button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .final-button:hover {
+            background-color: #0056b3;
+        }
+        .final-button.close {
+            background-color: #dc3545; /* Red color for close button */
+        }
+        .final-button.close:hover {
+            background-color: #c82333; /* Darker red on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h2 style="color: #ff6600;">Interactive BSIT Quiz</h2>
+        <div id="question-container">
+            <div class="question" id="question"></div>
+            <div class="answers" id="answers"></div>
+            <div class="message" id="message"></div>
+        </div>
+        <div class="final-buttons" id="final-buttons" style="display: none;">
+            <button class="final-button try-again" onclick="restartQuiz()">Try Again</button>
+            <button class="final-button close" onclick="closeWindow()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "1. What does BSIT stand for?",
+                options: ["Bachelor of Science in Information Technology", "Bachelor of Science in Internet Technology", "Bachelor of Science in Information Techniques", "Bachelor of Science in IT"],
+                answer: "Bachelor of Science in Information Technology"
+            },
+            {
+                question: "2. What is the primary language used for web development?",
+                options: ["Python", "JavaScript", "C++", "Ruby"],
+                answer: "JavaScript"
+            },
+            {
+                question: "3. Which of the following is a type of database?",
+                options: ["HTML", "MySQL", "CSS", "Java"],
+                answer: "MySQL"
+            },
+            {
+                question: "4. What does API stand for?",
+                options: ["Application Programming Interface", "Application Protocol Interface", "Application Process Integration", "Application Programming Integration"],
+                answer: "Application Programming Interface"
+            },
+            {
+                question: "5. What is the purpose of CSS?",
+                options: ["To structure web pages", "To style web pages", "To create web pages", "To store data"],
+                answer: "To style web pages"
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+
+        function loadQuestion() {
+            const questionData = questions[currentQuestionIndex];
+            document.getElementById("question").textContent = questionData.question;
+            const answersContainer = document.getElementById("answers");
+            answersContainer.innerHTML = ""; 
+
+            questionData.options.forEach(option => {
+                const button = document.createElement("button");
+                button.className = "answer-button";
+                button.textContent = option;
+                button.onclick = function() {
+                    checkAnswer(option);
+                };
+                answersContainer.appendChild(button);
+            });
+
+            document.getElementById("message").textContent = ""; 
+        }
+
+        function checkAnswer(selectedOption) {
+            const message = document.getElementById("message");
+
+            if (selectedOption === questions[currentQuestionIndex].answer) {
+                message.textContent = "Correct! Proceeding to the next question.";
+                message.className = "message correct"; 
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    setTimeout(loadQuestion, 1000); 
+                } else {
+                    message.textContent = "You've completed the quiz!";
+                    document.getElementById("answers").innerHTML = ""; 
+                    document.getElementById("final-buttons").style.display = "flex";
+                }
+            } else {
+                message.textContent = "Try again.";
+                message.className = "message incorrect"; 
+            }
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            document.getElementById("final-buttons").style.display = "none";
+            loadQuestion();
+        }
+
+        function closeWindow() {
+            window.close();
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>

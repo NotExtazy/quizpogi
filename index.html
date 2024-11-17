@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333; /* Black background */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .login-container h2 {
+            margin-bottom: 10px;
+            font-size: 1.8em;
+            color: #ff6600; /* Orange color for the title */
+        }
+        .login-container p.hint {
+            margin: 0;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            color: #ff6600; /* Orange hint text */
+        }
+        .login-container label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ff6600; /* Orange color for labels */
+            text-align: left;
+        }
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ff6600; /* Orange border */
+            border-radius: 20px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        .login-container input[type="checkbox"] {
+            margin-right: 5px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .login-container button {
+            width: 30%;
+            padding: 12px;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            box-sizing: border-box;
+        }
+        .login-container button.login {
+            background-color: #ff6600; /* Orange background */
+            color: black; /* Black text */
+        }
+        .login-container button.login:hover {
+            background-color: #e65c00; /* Darker orange on hover */
+        }
+        .login-container button.clear {
+            background-color: #ff9f00; /* Lighter orange */
+            color: black;
+        }
+        .login-container button.clear:hover {
+            background-color: #e68a00;
+        }
+        .login-container button.cancel {
+            background-color: #dc3545; /* Red color for cancel */
+            color: white;
+        }
+        .login-container button.cancel:hover {
+            background-color: #c82333;
+        }
+
+        /* For larger screens, adjust button widths */
+        @media (min-width: 500px) {
+            .login-container button {
+                width: 30%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <p id="hint" class="hint">Hint: The password is as simple as it sounds—a 'word' for access.</p>
+        <form id="loginForm">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+            <label>
+                <input type="checkbox" id="showPassword"> Show Password
+            </label>
+
+            <div class="buttons">
+                <button type="submit" class="login">Login</button>
+                <button type="button" class="clear" id="clearBtn">Clear</button>
+                <button type="button" class="cancel" onclick="window.location.href='index.html'">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        let failedAttempts = 0;
+
+        // Show or hide password
+        document.getElementById('showPassword').addEventListener('change', function() {
+            const passwordField = document.getElementById('password');
+            passwordField.type = this.checked ? 'text' : 'password';
+        });
+
+        // Clear the form fields
+        document.getElementById('clearBtn').addEventListener('click', function() {
+            document.getElementById('loginForm').reset();
+        });
+
+        // Simulate login and provide hints
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === "admin" && password === "password") {
+                alert("Login successful!");
+                window.location.href = "dashboard.html"; // Redirect to the dashboard
+            } else {
+                failedAttempts++;
+                const hintElement = document.getElementById('hint');
+
+                // Update hints based on failed attempts
+                if (failedAttempts === 1) {
+                    hintElement.textContent = "Hint: The username is a user name but not a user.";
+                } else if (failedAttempts === 2) {
+                    hintElement.textContent = "Hint: The password is another word for passcode.";
+                } else if (failedAttempts >= 3) {
+                    hintElement.textContent = "Hint: Username is 'admin', and the password is 'password'.";
+                }
+
+                alert("Invalid username or password. Try again!");
+            }
+        });
+    </script>
+</body>
+</html>
